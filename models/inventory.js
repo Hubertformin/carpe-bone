@@ -4,6 +4,7 @@ const InventorySchema = new mongoose.Schema({
     name: String,
     category: String,
     unitPrice: String,
+    quantity: Number,
     photoURL: String
 }, {timestamps: true});
 
