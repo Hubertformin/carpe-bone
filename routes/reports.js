@@ -12,6 +12,7 @@ router.get('/', async (req, res, next) => {
         // send to front end
         res.status(200).json({data: payload, count: payload.length});
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -23,6 +24,7 @@ router.get('/:id', async (req, res, next) => {
         // send to front end
         res.status(200).json({data: payload})
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -36,6 +38,7 @@ router.post('/', async (req, res, next) => {
         // send to front end
         res.status(200).json({data: _payload})
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -47,6 +50,7 @@ router.put("/:id", async (req, res, next) => {
         // send to front end
         res.status(200).json({message: "Reports updated"});
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -58,6 +62,7 @@ router.delete('/:id', async (req, res, next) => {
         // send to front end
         res.status(200).json({message: "Reports deleted"})
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -73,6 +78,7 @@ router.get('/inventory', async (req, res, next) => {
         // send to front end
         res.status(200).json({data: payload, count: payload.length});
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -84,6 +90,7 @@ router.get('/inventory/:id', async (req, res, next) => {
         // send to front end
         res.status(200).json({data: payload})
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -97,6 +104,7 @@ router.post('/inventory', async (req, res, next) => {
         // send to front end
         res.status(200).json({data: _payload})
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -108,6 +116,7 @@ router.put("/inventory/:id", async (req, res, next) => {
         // send to front end
         res.status(200).json({message: "InventoryReports updated"});
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -119,6 +128,7 @@ router.delete('/inventory/:id', async (req, res, next) => {
         // send to front end
         res.status(200).json({message: "InventoryReports deleted"})
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -134,6 +144,7 @@ router.get('/inventory-category', async (req, res, next) => {
         // send to front end
         res.status(200).json({data: payload, count: payload.length});
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -145,6 +156,7 @@ router.get('/inventory-category/:id', async (req, res, next) => {
         // send to front end
         res.status(200).json({data: payload})
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -158,6 +170,7 @@ router.post('/inventory-category', async (req, res, next) => {
         // send to front end
         res.status(200).json({data: _payload})
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -169,6 +182,7 @@ router.put("/inventory-category/:id", async (req, res, next) => {
         // send to front end
         res.status(200).json({message: "InventoryReports updated"});
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -180,6 +194,7 @@ router.delete('/inventory-category/:id', async (req, res, next) => {
         // send to front end
         res.status(200).json({message: "InventoryReports deleted"})
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });

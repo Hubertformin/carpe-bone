@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const ItemsReportsSchema = new mongoose.Schema({
+    id: String,
     itemId: String,
     name: String,
     date: String,
@@ -9,4 +10,4 @@ const ItemsReportsSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 
-module.exports = mongoose.model('items-report', ItemsReportsSchema);
+module.exports = mongoose.model('inventory-report', ItemsReportsSchema);

@@ -4,8 +4,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require("mongoose");
-mongoose.set("useFindAndModify", false);
-mongoose.set("useCreateIndex", true);
+const cors = require('cors');
+// mongoose.set("useFindAndModify", false);
+// mongoose.set("useCreateIndex", true);
 
 
 const indexRouter = require('./routes/index');
@@ -14,8 +15,10 @@ const inventoryRouter = require('./routes/inventory');
 const ordersRouter = require('./routes/orders');
 const reportsRouter = require('./routes/reports');
 const inventoryCategoryRouter = require('./routes/inventoryCategory');
+const searchRouter = require('./routes/search');
 
 const app = express();
+app.use(cors());
 
 const http = require("http").createServer(app);
 // view engine setup
@@ -23,7 +26,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 //Connect to database
-const MONGODB_URI = "mongodb+srv://nudle:nudle@cluster0.aahux.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const MONGODB_URI = "mongodb+srv://nudle:nudle@cluster0.aahux.mongodb.net/coreDB?retryWrites=true&w=majority";
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -42,9 +45,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/inventory', inventoryRouter);
-app.use('/inventory/category', inventoryCategoryRouter);
+app.use('/inventory-categories', inventoryCategoryRouter);
 app.use('/orders',ordersRouter);
 app.use('/reports',reportsRouter);
+app.use('/search', searchRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

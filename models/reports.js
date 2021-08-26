@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const reports = new mongoose.Schema({
+    id: String,
     date: String,
     totalQty: Number,
     totalAmount: Number,
@@ -8,4 +9,4 @@ const reports = new mongoose.Schema({
 }, {timestamps: true});
 
 
-module.exports = mongoose.model('category-report', reports);
+module.exports = mongoose.model('reports', reports);

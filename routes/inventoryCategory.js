@@ -10,6 +10,7 @@ router.get('/', async (req, res, next) => {
         // send to front end
         res.status(200).json({data: payloads, count: payloads.length});
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -21,6 +22,7 @@ router.get('/:id', async (req, res, next) => {
         // send to front end
         res.status(200).json({data: payload})
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -34,6 +36,7 @@ router.post('/', async (req, res, next) => {
         // send to front end
         res.status(200).json({data: _payload})
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -45,6 +48,7 @@ router.put("/:id", async (req, res, next) => {
         // send to front end
         res.status(200).json({message: "InventoryCategory updated"});
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });
@@ -56,6 +60,7 @@ router.delete('/:id', async (req, res, next) => {
         // send to front end
         res.status(200).json({message: "InventoryCategory deleted"})
     } catch (e) {
+        console.log(e);
         res.status(500).json({errorText: e.toString()})
     }
 });

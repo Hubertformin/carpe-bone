@@ -2,9 +2,11 @@ const mongoose = require('mongoose');
 const Reports = require('../models/reports');
 const InventoryReports = require('../models/inventoryReports');
 const CategoryReports = require('../models/categoryReport');
+const Functions = require('../utils/functions');
 
 const OrdersSchema = new mongoose.Schema({
     invoiceNumber: String,
+    dateId: String,
     items: Array,
     categories: Array,
     totalQty: Number,
@@ -22,38 +24,42 @@ const OrdersSchema = new mongoose.Schema({
  */
 OrdersSchema.post('save', async (doc, next) => {
     // generate date Id
-    const dateId = generateDateId();
+    const dateId = Functions.generateDateId();
     // 1. REPORTS
-    await Reports.findOneAndUpdate({_id: '_GLOBAL'}, {
-        $inc: {totalAmount: doc.totalAmount, totalQty: doc.totalQty}
+    await Reports.findOneAndUpdate({ id: '_GLOBAL'}, {
+        id: '_GLOBAL',
+        $inc: {totalAmount: doc.totalAmount, numberOfOders: 1}
     }, {
         new: true,
         upsert: true // Make this update into an upsert
     });
     // update date Id
-    await Reports.findOneAndUpdate({_id: dateId}, {
+    await Reports.findOneAndUpdate({id: dateId}, {
+        id: dateId,
         date: dateId,
-        $inc: {totalAmount: doc.totalAmount, totalQty: doc.totalQty}
+        $inc: {totalAmount: doc.totalAmount, numberOfOders: 1}
     }, {
         new: true,
         upsert: true // Make this update into an upsert
     });
     // 2. Inventory report
     for (const item of doc.items) {
-        await InventoryReports.findOneAndUpdate({_id: '_GLOBAL', itemId: item._id}, {
+        await InventoryReports.findOneAndUpdate({id: '_GLOBAL', itemId: item._id}, {
+            id: '_GLOBAL',
             itemId: item._id,
-            name: doc.name,
-            $inc: {totalAmount: doc.totalAmount, totalQty: doc.totalQty}
+            name: item.name,
+            $inc: {totalAmount: (item.quantity * item.unitPrice), totalQty: item.quantity}
         }, {
             new: true,
             upsert: true // Make this update into an upsert
         });
         // update date Id
-        await InventoryReports.findOneAndUpdate({_id: dateId, itemId: item._id}, {
+        await InventoryReports.findOneAndUpdate({id: dateId, itemId: item._id}, {
+            id: dateId,
             date: dateId,
             itemId: item._id,
-            name: doc.name,
-            $inc: {totalAmount: doc.totalAmount, totalQty: doc.totalQty}
+            name: item.name,
+            $inc: {totalAmount: (item.quantity * item.unitPrice), totalQty: item.quantity}
         }, {
             new: true,
             upsert: true // Make this update into an upsert
@@ -62,20 +68,20 @@ OrdersSchema.post('save', async (doc, next) => {
 
     // 2. Inventory categories report
     for (const item of doc.categories) {
-        await CategoryReports.findOneAndUpdate({_id: '_GLOBAL', itemId: item._id}, {
-            itemId: item._id,
-            name: doc.name,
-            $inc: {totalAmount: doc.totalAmount, totalQty: doc.totalQty}
+        await CategoryReports.findOneAndUpdate({id: '_GLOBAL', name: item.name}, {
+            id: '_GLOBAL',
+            name: item.name,
+            $inc: {totalAmount: item.totalAmount, totalQty: item.totalQty}
         }, {
             new: true,
             upsert: true // Make this update into an upsert
         });
         // update date Id
-        await CategoryReports.findOneAndUpdate({_id: dateId, itemId: item._id}, {
+        await CategoryReports.findOneAndUpdate({id: dateId, name: item.name}, {
+            id: dateId,
             date: dateId,
-            itemId: item._id,
-            name: doc.name,
-            $inc: {totalAmount: doc.totalAmount, totalQty: doc.totalQty}
+            name: item.name,
+            $inc: {totalAmount: item.totalAmount, totalQty: item.totalQty}
         }, {
             new: true,
             upsert: true // Make this update into an upsert
@@ -85,9 +91,3 @@ OrdersSchema.post('save', async (doc, next) => {
 });
 
 module.exports = mongoose.model('orders', OrdersSchema);
-
-
-function generateDateId() {
-    const date = new Date();
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-}

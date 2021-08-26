@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 
 const InventoryCategorySchema = new mongoose.Schema({
-    name: String,
+    name: {
+      type: String,
+      unique: true
+    },
     numberOfItems: Number
 }, {timestamps: true});
 

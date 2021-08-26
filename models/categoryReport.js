@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const categoryReportsSchema = new mongoose.Schema({
     categoryId: String,
+    id: String,
     name: String,
     date: String,
     totalQty: Number,
