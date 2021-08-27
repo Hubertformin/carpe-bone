@@ -5,6 +5,7 @@ const reports = new mongoose.Schema({
     date: String,
     totalQty: Number,
     totalAmount: Number,
+    numberOfOders: Number,
     dailyOrders: Number,
 }, {timestamps: true});
 
