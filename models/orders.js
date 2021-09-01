@@ -28,7 +28,7 @@ OrdersSchema.post('save', async (doc, next) => {
     // 1. REPORTS
     await Reports.findOneAndUpdate({ id: '_GLOBAL'}, {
         id: '_GLOBAL',
-        $inc: {totalAmount: doc.totalAmount, numberOfOders: 1}
+        $inc: {totalAmount: doc.totalAmount, numberOfOrders: 1}
     }, {
         new: true,
         upsert: true // Make this update into an upsert
@@ -37,7 +37,7 @@ OrdersSchema.post('save', async (doc, next) => {
     await Reports.findOneAndUpdate({id: dateId}, {
         id: dateId,
         date: dateId,
-        $inc: {totalAmount: doc.totalAmount, numberOfOders: 1}
+        $inc: {totalAmount: doc.totalAmount, numberOfOrders: 1}
     }, {
         new: true,
         upsert: true // Make this update into an upsert

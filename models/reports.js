@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const reports = new mongoose.Schema({
-    id: String,
+    dateId: String,
     date: String,
     totalQty: Number,
     totalAmount: Number,
-    numberOfOders: Number,
+    numberOfOrders: Number,
     dailyOrders: Number,
 }, {timestamps: true});
 
