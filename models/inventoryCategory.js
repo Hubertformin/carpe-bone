@@ -8,4 +8,4 @@ const InventoryCategorySchema = new mongoose.Schema({
     numberOfItems: Number
 }, {timestamps: true});
 
-module.exports = mongoose.model('inventoryCategory', InventoryCategorySchema);
+module.exports = mongoose.model('inventory_categories', InventoryCategorySchema);

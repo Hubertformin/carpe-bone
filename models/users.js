@@ -8,4 +8,4 @@ const UserSchema = new mongoose.Schema({
     role: String
 }, {timestamps: true});
 
-module.exports = mongoose.model('Users', UserSchema);
+module.exports = mongoose.model('users', UserSchema);

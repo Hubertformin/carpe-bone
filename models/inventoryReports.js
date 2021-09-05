@@ -10,4 +10,4 @@ const ItemsReportsSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 
-module.exports = mongoose.model('inventory-report', ItemsReportsSchema);
+module.exports = mongoose.model('inventory_reports', ItemsReportsSchema);

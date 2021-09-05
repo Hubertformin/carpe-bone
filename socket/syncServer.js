@@ -19,6 +19,7 @@ const CREATE = 1,
     DELETE = 3;
 
 function SyncServer(port) {
+    console.log('sync init...');
     // This sample sync server works against a RAM database - an object of tables + an array of changes to the database
 
     // ----------------------------------------------------------------------------
@@ -131,8 +132,8 @@ function SyncServer(port) {
     let nextClientIdentity = 1;
 
     this.start = function () {
-        webSocket.createServer(function (conn) {
-
+        webSocket.createServer((conn) => {
+            console.log(`Socket server running at ${port}...`);
             let syncedRevision = 0; // Used when sending changes to client. Only send changes above syncedRevision since client is already in sync with syncedRevision.
 
             function sendAnyChanges() {
@@ -157,8 +158,9 @@ function SyncServer(port) {
 
             conn.on("text", function (message) {
                 const request = JSON.parse(message);
+                console.log(request);
                 const type = request.type;
-                if (type == "clientIdentity") {
+                if (type === "clientIdentity") {
                     // Client Hello: Client says "Hello, My name is <clientIdentity>!" or "Hello, I'm newborn. Please give me a name!"
                     // Client identity is used for the following purpose:
                     //  * When client sends its changes, register the changes into server database and mark each change with the clientIdentity.
@@ -178,7 +180,7 @@ function SyncServer(port) {
                             clientIdentity: conn.clientIdentity
                         }));
                     }
-                } else if (type == "subscribe") {
+                } else if (type === "subscribe") {
                     // Client wants to subscribe to server changes happened or happening after given syncedRevision
                     syncedRevision = request.syncedRevision || 0;
                     // Send any changes we have currently:
@@ -186,7 +188,7 @@ function SyncServer(port) {
                     // Start subscribing for additional changes:
                     db.subscribe(sendAnyChanges);
 
-                } else if (type == "changes") {
+                } else if (type === "changes") {
                     // Client sends its changes to us.
                     const requestId = request.requestId;
                     try {
@@ -425,4 +427,5 @@ function setByKeyPath(obj, keyPath, value) {
     }
 }
 
-module.export = SyncServer;
+
+module.exports = SyncServer;

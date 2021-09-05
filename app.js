@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require("mongoose");
 const cors = require('cors');
+const SyncServer = require('./socket/syncServer.js');
 // mongoose.set("useFindAndModify", false);
 // mongoose.set("useCreateIndex", true);
 
@@ -72,3 +73,10 @@ http.listen(process.env.PORT || 5000, function () {
   const port = process.env.PORT || 5000; //http.address().port;
   console.log(`App listening on port ${port}`);
 });
+
+// sync server
+let syncServer = new SyncServer(2100);
+syncServer.start();
+
+// prod url for carpe
+// mongodb+srv://admin:root@carpecluster.1wbu3.mongodb.net/carpeDB?retryWrites=true&w=majority

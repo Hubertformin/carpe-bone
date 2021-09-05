@@ -8,4 +8,4 @@ const InventorySchema = new mongoose.Schema({
     photoURL: String
 }, {timestamps: true});
 
-module.exports = mongoose.model('Inventory', InventorySchema);
+module.exports = mongoose.model('inventory_items', InventorySchema);

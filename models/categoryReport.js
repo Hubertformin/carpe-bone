@@ -10,4 +10,4 @@ const categoryReportsSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 
-module.exports = mongoose.model('category-report', categoryReportsSchema);
+module.exports = mongoose.model('category_reports', categoryReportsSchema);
