@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 
 const syncChangesSchema = new mongoose.Schema({
-    name: String,
-    location: String,
-    country: String,
-    city: String,
-    currency: String
+    rev: Number,
+    source: String,
+    type: Number,
+    table: String,
+    key: String,
+    mods: Object,
+    obj: Object
 }, {timestamps: true});
 
 
