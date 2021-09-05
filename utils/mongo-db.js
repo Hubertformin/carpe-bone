@@ -24,7 +24,7 @@ if (!cached) cached = global.mongo = {};
 /*
 * Connect to database
 * */
-export async function connectToDatabase() {
+async function connectToDatabase() {
     if (cached.conn) return cached.conn;
     if(!cached.promise) {
         const conn = {};
@@ -45,3 +45,5 @@ export async function connectToDatabase() {
     await cached.promise;
     return cached.conn;
 }
+
+module.exports = connectToDatabase;

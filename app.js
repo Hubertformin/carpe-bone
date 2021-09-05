@@ -76,7 +76,11 @@ http.listen(process.env.PORT || 5000, function () {
 
 // sync server
 let syncServer = new SyncServer(2100);
-syncServer.start();
+syncServer.init()
+.then(() => {
+  // start....
+  syncServer.start();
+})
 
 // prod url for carpe
 // mongodb+srv://admin:root@carpecluster.1wbu3.mongodb.net/carpeDB?retryWrites=true&w=majority
