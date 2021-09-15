@@ -94,7 +94,7 @@ router.get('/invoice-number', async (req, res, next) => {
     try {
         // date Id
         const dateId = Functions.generateDateId();
-        const payload = await Reports.findOne({ date: dateId});
+        const payload = await Reports.findOne(c);
         // is date id exist
         if (payload) {
             const inv = Functions.generateInvoinceNumber(payload.numberOfOders + 1);

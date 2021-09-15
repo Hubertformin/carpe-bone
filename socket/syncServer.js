@@ -23,7 +23,7 @@
  class SyncServer {
      port;
      db;
-     revision;
+     revision = 0;
      dbHandler = {
         // tables: {},  // Tables: Each key is a table and its value is another object where each key is the primary key and value is the record / object that is stored in ram.
         // changes: [], // Special table that records all changes made to the db. In this simple sample, we let it grow infinitly. In real world, we would have had a regular cleanup of old changes.
@@ -48,82 +48,76 @@
             this.dbHandler.subscribers.splice(this.dbHandler.subscribers.indexOf(fn), 1);
         },
         create: async (table, key, obj, clientIdentity) => {
-            // Create table if it doesnt exist:
-            //this.dbHandler.tables[table] = this.dbHandler.tables[table] || {};
-            // Put the obj into to table
-            // this.dbHandler.tables[table][key] = obj;
-            await this.db.collection(table).insertOne({_id: key, ...obj})
-            .catch(err => console.log(err));
-            // Register the change:
-            this.revision = this.revision + 1;
+            try {
+                // Create table if it doesnt exist:
+                //this.dbHandler.tables[table] = this.dbHandler.tables[table] || {};
+                // Put the obj into to table
+                // this.dbHandler.tables[table][key] = obj;
+                await this.db.collection(table).insertOne({_id: key, ...obj});
+                // Register the change:
+                this.revision = this.revision + 1;
 
-            this.db.collection('changes').insertOne({
-               rev: this.revision,
-               source: clientIdentity,
-               type: CREATE,
-               table: table,
-               key: key,
-               obj: obj
-           }).catch(err => console.log(err));
-           //  this.dbHandler.changes.push({
-           //      rev: ++this.revision,
-           //      source: clientIdentity,
-           //      type: CREATE,
-           //      table: table,
-           //      key: key,
-           //      obj: obj
-           //  });
-            this.dbHandler.trigger();
+                 this.db.collection('changes').insertOne({
+                    rev: this.revision,
+                    source: clientIdentity,
+                    type: CREATE,
+                    table: table,
+                    key: key,
+                    obj: obj
+                }).catch(err => console.log(err));
+                //  this.dbHandler.changes.push({
+                //      rev: ++this.revision,
+                //      source: clientIdentity,
+                //      type: CREATE,
+                //      table: table,
+                //      key: key,
+                //      obj: obj
+                //  });
+                 this.dbHandler.trigger();
+
+            } catch(err) {
+                console.log(err)
+            }
         },
         update: async (table, key, modifications, clientIdentity) => {
-            console.log(key);
-            console.log(modifications);
-           await this.db.collection(table).updateOne({_id: key}, {$set: {...modifications}}, {$upsert: true})
-           .catch(err => console.log(err));
-           // Register the change:
-           this.revision = this.revision + 1;
+            try {
+                await this.db.collection(table).updateOne({_id: key}, {$set: {...modifications}}, {$upsert: true})
+                // Register the change:
+                this.revision = this.revision + 1;
 
-           this.db.collection('changes').insertOne({
-               rev: this.revision,
-               source: clientIdentity,
-               type: UPDATE,
-               table: table,
-               key: key,
-               mods: modifications
-          }).catch(err => console.log(err));
+                this.db.collection('changes').insertOne({
+                    rev: this.revision,
+                    source: clientIdentity,
+                    type: UPDATE,
+                    table: table,
+                    key: key,
+                    mods: modifications
+                }).catch(err => console.log(err));
 
-          this.dbHandler.trigger();
-            // if (this.dbHandler.tables[table]) {
-            //     const obj = this.dbHandler.tables[table][key];
-            //     if (obj) {
-            //         applyModifications(obj, modifications);
-            //         this.dbHandler.changes.push({
-            //             rev: ++this.revision,
-            //             source: clientIdentity,
-            //             type: UPDATE,
-            //             table: table,
-            //             key: key,
-            //             mods: modifications
-            //         });
-            //         this.dbHandler.trigger();
-            //     }
-            // }
+                this.dbHandler.trigger();
+            } catch(err) {
+                console.log(err)
+            }
         },
         'delete': async (table, key, clientIdentity) => {
-            this.revision = this.revision + 1;
+            try {
+                await this.db.collection(table).deleteOne({_id: key})
+                
+                this.revision = this.revision + 1;
 
-            await this.db.collection(table).deleteOne({_id: key})
-            .catch(err => console.log(err));
+                this.db.collection('changes').insertOne({
+                    rev: this.revision,
+                    source: clientIdentity,
+                    type: DELETE,
+                    table: table,
+                    key: key,
+                }).catch(err => console.log(err));
 
-            this.db.collection('changes').insertOne({
-                rev: this.revision,
-                source: clientIdentity,
-                type: DELETE,
-                table: table,
-                key: key,
-           }).catch(err => console.log(err));
+                this.dbHandler.trigger();
 
-            this.dbHandler.trigger();
+            } catch(err) {
+                console.log(err)
+            }
 
             // if (this.dbHandler.tables[table]) {
             //     if (this.dbHandler.tables[table][key]) {
@@ -154,7 +148,7 @@
          const sync_config = await db.collection('sync_config').findOne({$where: function() {
             return this._id === 'SYNC_CONFIG'
         }});
-        this.revision = sync_config.revision ? sync_config.revision : 0;
+        this.revision = sync_config ? sync_config.revision : 0;
      }
      // ----------------------------------------------------------------------------
      //
