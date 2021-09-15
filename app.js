@@ -1,30 +1,30 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const mongoose = require("mongoose");
-const cors = require('cors');
+// const createError = require('http-errors');
+// const express = require('express');
+// const path = require('path');
+// const cookieParser = require('cookie-parser');
+// const logger = require('morgan');
+// const mongoose = require("mongoose");
+// const cors = require('cors');
 const SyncServer = require('./socket/syncServer.js');
 // mongoose.set("useFindAndModify", false);
 // mongoose.set("useCreateIndex", true);
 
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const inventoryRouter = require('./routes/inventory');
-const ordersRouter = require('./routes/orders');
-const reportsRouter = require('./routes/reports');
-const inventoryCategoryRouter = require('./routes/inventoryCategory');
-const searchRouter = require('./routes/search');
+// const indexRouter = require('./routes/index');
+// const usersRouter = require('./routes/users');
+// const inventoryRouter = require('./routes/inventory');
+// const ordersRouter = require('./routes/orders');
+// const reportsRouter = require('./routes/reports');
+// const inventoryCategoryRouter = require('./routes/inventoryCategory');
+// const searchRouter = require('./routes/search');
 
-const app = express();
-app.use(cors());
+// const app = express();
+// app.use(cors());
 
-const http = require("http").createServer(app);
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+// const http = require("http").createServer(app);
+// // view engine setup
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'ejs');
 
 //Connect to database
 // const MONGODB_URI = "mongodb+srv://nudle:nudle@cluster0.aahux.mongodb.net/coreDB?retryWrites=true&w=majority";
