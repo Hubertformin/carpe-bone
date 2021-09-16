@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('syncServer.js', { title: 'Express' });
+  res.send('Nudle Api Test');
 });
 
 module.exports = router;
